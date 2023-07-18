@@ -682,7 +682,7 @@ menu_items = {
 }
 
 
-TIMER_DELAY = 1.0
+TIMER_DELAY = 0.05
 
 
 class MenuManager:
@@ -711,7 +711,11 @@ class MenuManager:
         self.printer.add_object('menu', self)
         self.printer.register_event_handler("klippy:ready", self.handle_ready)
         # register for key events
-        menu_keys.MenuKeys(config, self.key_event)
+        
+
+        # menu_keys.MenuKeys(config, self.key_event)
+        display.lcd_chip.menu_key_callback = self.key_event
+
         # Load local config file in same directory as current module
         self.load_config(os.path.dirname(__file__), 'menu.cfg')
         # Load items from main config
