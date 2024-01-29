@@ -12,12 +12,13 @@ MESSAGE_MAX = 128
 MESSAGE_SYNC = 0x7e
 
 
-CMD_DISPLAY_TEXT  = 10
-CMD_KNOB_EVENT    = 12
-CMD_BUTTON_EVENT  = 13
-CMD_BUZZER_PLAY   = 14
-CMD_BUZZER_QUEUE  = 15
-CMD_BUZZER_EVENT  = 16
+CMD_DISPLAY_TEXT   = 10
+CMD_SET_BRIGHTNESS = 11
+CMD_KNOB_EVENT     = 12
+CMD_BUTTON_EVENT   = 13
+CMD_BUZZER_PLAY    = 14
+CMD_BUZZER_QUEUE   = 15
+CMD_BUZZER_EVENT   = 16
 
 
 def crc16_ccitt(buf):
@@ -155,6 +156,12 @@ class VinDisplay:
         ncycles = max(1, int(freq * duration))
         hperiod = int(1_000_000.0 / freq) // 2
         cmd = pack('<BBLHH', CMD_BUZZER_QUEUE, 8, ncycles, hperiod, hperiod)
+        return cmd
+
+
+    @send_cmd
+    def cmd_set_brightness(self, br_level):
+        cmd = pack('<BB', CMD_SET_BRIGHTNESS, br_level)
         return cmd
 
 
